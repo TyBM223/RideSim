@@ -1,0 +1,38 @@
+# Concrete, fully-resolved dependency lock.
+#
+# pyproject.toml declares ABSTRACT dependencies -- the ranges this code is
+# compatible with. This file declares CONCRETE ones -- the exact versions the
+# test suite was last verified green against, including transitive packages we
+# never import directly. That split is what makes a build reproducible: two
+# machines installing from this file get byte-identical dependency trees, so
+# "works on my machine" cannot be a version-skew problem.
+#
+# Regenerate after changing dependencies:
+#     ./venv/bin/pip freeze --exclude-editable > requirements.txt
+#
+# Install (after creating a venv):
+#     pip install -r requirements.txt && pip install -e . --no-deps
+
+annotated-doc==0.0.5
+annotated-types==0.8.0
+anyio==4.14.2
+certifi==2026.7.22
+click==8.5.0
+fastapi==0.141.1
+h11==0.16.0
+httpcore2==2.12.0
+httpx2==2.12.0
+idna==3.19
+iniconfig==2.3.0
+packaging==26.3
+pluggy==1.6.0
+pydantic==2.13.4
+pydantic_core==2.46.4
+Pygments==2.21.0
+pytest==9.1.1
+ruff==0.16.4
+starlette==1.6.0
+truststore==0.10.4
+typing-inspection==0.4.4
+typing_extensions==4.16.0
+uvicorn==0.52.4

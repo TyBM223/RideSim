@@ -1,0 +1,19 @@
+# Virtualenv — recreated from requirements.txt, never committed.
+venv/
+.venv/
+
+# Python bytecode and build artifacts.
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Tool caches.
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local secrets and machine-specific config. Committed as .env.example instead.
+.env

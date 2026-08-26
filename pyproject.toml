@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ridesim"
+version = "0.1.0"
+description = "Real-time driver-to-rider matching and dispatch system."
+requires-python = ">=3.11"
+
+# Abstract dependencies: the versions this code is *compatible with*.
+# The exact versions actually installed are locked in requirements.txt.
+#
+# `~=` is PEP 440's compatible-release operator, and where you put the last dot
+# matters. `~=2.13` allows >=2.13, <3.0 -- correct for a package that follows
+# semver, where breaking changes land on the MAJOR bump. `~=0.141.1` allows
+# >=0.141.1, <0.142.0 -- correct for a 0.x package, where the project has made
+# no stability promise and breaking changes routinely land on the MINOR bump.
+# Writing `~=0.141` for a 0.x package would admit every release below 1.0.
+dependencies = [
+    "fastapi~=0.141.1",   # HTTP framework + request validation + OpenAPI generation
+    "uvicorn~=0.52.4",    # ASGI server that actually runs the app
+    "pydantic~=2.13",     # Validation engine. A FastAPI dependency, declared anyway
+                          # because we import it directly -- a package you import is
+                          # yours to declare, even if something else also pulls it in.
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest~=9.1",      # Test runner
+    # HTTP client backing fastapi.testclient.TestClient. Starlette 1.6 deprecated
+    # the httpx 0.x backend in favour of httpx2; pinning httpx2 silences a warning
+    # that is scheduled to become a hard break on a later Starlette release.
+    "httpx2~=2.12",
+    "ruff~=0.16.4",     # Linter + formatter (0.x: pinned to the minor line)
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# --strict-markers turns a typo'd @pytest.mark.foo into an error instead of a
+# silently-ignored no-op, which would otherwise hide skipped tests.
+addopts = "-q --strict-markers --strict-config"
+markers = [
+    "integration: requires external services (Postgres, Redis) to be running",
+]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W",   # pycodestyle: whitespace/formatting errors
+    "F",        # pyflakes: unused imports, undefined names, real bugs
+    "I",        # isort: import ordering
+    "B",        # flake8-bugbear: likely-bug patterns (e.g. mutable default args)
+    "UP",       # pyupgrade: outdated syntax for our Python floor
+    "SIM",      # flake8-simplify: needlessly complex constructs
+    "ANN",      # flake8-annotations: missing type hints
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests do not need return-type annotations on every test function; the return
+# is always None and annotating it is noise that hides the meaningful hints.
+"tests/*" = ["ANN201"]
