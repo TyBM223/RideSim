@@ -1,5 +1,7 @@
 # RideSim
 
+[![ci](https://github.com/TyBM223/RideSim/actions/workflows/ci.yml/badge.svg)](https://github.com/TyBM223/RideSim/actions/workflows/ci.yml)
+
 A real-time driver-to-rider matching and dispatch system, built as a study in
 backend, algorithmic, and distributed-systems engineering.
 
@@ -139,3 +141,7 @@ Current, deliberate, and tracked:
   It is currently harmless because everything else is open too, but it must be
   restricted at the same time authentication is added.
 - **Single process, single machine.** No horizontal scaling story yet.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
